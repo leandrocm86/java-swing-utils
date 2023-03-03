@@ -1,0 +1,44 @@
+@options
+@packages
+-encoding
+'UTF-8'
+-protected
+--release
+17
+-sourcepath
+'/home/l86/java/java-swing-utils/src/main/java:/home/l86/java/java-swing-utils/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2023. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/home/l86/java/java-swing-utils/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'swing-utils 1.0.3 API'
+-use
+-version
+-windowtitle
+'swing-utils 1.0.3 API'
+lcm.java.swing
+/home/l86/java/java-swing-utils/src/main/java = 1677540996573
+/home/l86/java/java-swing-utils/target/generated-sources/annotations = 1677789736688
+/home/l86/java/java-swing-utils/target/apidocs/allpackages-index.html = 1677794299350
+/home/l86/java/java-swing-utils/target/apidocs/overview-tree.html = 1677794299250
+/home/l86/java/java-swing-utils/target/apidocs/search.js = 1677794299642
+/home/l86/java/java-swing-utils/target/apidocs/module-search-index.js = 1677794299350
+/home/l86/java/java-swing-utils/target/apidocs/tag-search-index.js = 1677794299362
+/home/l86/java/java-swing-utils/target/apidocs/serialized-form.html = 1677794299022
+/home/l86/java/java-swing-utils/target/apidocs/jquery-ui.overrides.css = 1677794299702
+/home/l86/java/java-swing-utils/target/apidocs/index-all.html = 1677794299586
+/home/l86/java/java-swing-utils/target/apidocs/type-search-index.js = 1677794299358
+/home/l86/java/java-swing-utils/target/apidocs/script.js = 1677794299626
+/home/l86/java/java-swing-utils/target/apidocs/member-search-index.js = 1677794299358
+/home/l86/java/java-swing-utils/target/apidocs/stylesheet.css = 1677794299622
+/home/l86/java/java-swing-utils/target/apidocs/element-list = 1677794298774
+/home/l86/java/java-swing-utils/target/apidocs/index.html = 1677794299594
+/home/l86/java/java-swing-utils/target/apidocs/allclasses-index.html = 1677794299334
+/home/l86/java/java-swing-utils/target/apidocs/package-search-index.js = 1677794299354
+/home/l86/java/java-swing-utils/target/apidocs/help-doc.html = 1677794299610
