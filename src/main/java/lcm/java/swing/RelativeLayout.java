@@ -120,7 +120,6 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable
 	 * @return            A JPanel containing the given components horizontally disposed with the given proportions.
 	 */
 	public static JPanel horizontalPane(List<Component> components, float... proportions) {
-		components.replaceAll(elem -> elem != null ? elem : Box.createHorizontalGlue());
 		return createPanel(new RelativeLayout(Axis.HORIZONTAL, false), components, proportions);
 	}
 
@@ -135,7 +134,6 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable
 	 * @return            A JPanel containing the given components horizontally disposed with the given proportions.
 	 */
 	public static JPanel fullHorizontalPane(List<Component> components, float... proportions) {
-		components.replaceAll(elem -> elem != null ? elem : Box.createHorizontalGlue());
 		return createPanel(new RelativeLayout(Axis.HORIZONTAL, true), components, proportions);
 	}
 
@@ -150,7 +148,6 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable
 	 * @return            A JPanel containing the given components vertically disposed with the given proportions.
 	 */
 	public static JPanel verticalPane(List<Component> components, float... proportions) {
-		components.replaceAll(elem -> elem != null ? elem : Box.createVerticalGlue());
 		return createPanel(new RelativeLayout(Axis.VERTICAL, false), components, proportions);
 	}
 
@@ -165,7 +162,6 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable
 	 * @return            A JPanel containing the given components vertically disposed with the given proportions.
 	 */
 	public static JPanel fullVerticalPane(List<Component> components, float... proportions) {
-		components.replaceAll(elem -> elem != null ? elem : Box.createVerticalGlue());
 		return createPanel(new RelativeLayout(Axis.VERTICAL, true), components, proportions);
 	}
 
@@ -174,8 +170,12 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable
 			throw new IllegalArgumentException("Different number of components and proportions for RelativeLayout!");
 
 		var panel = new JPanel(layout);
-		for (int i = 0; i < components.size(); i++)
-			panel.add(components.get(i), proportions[i]);
+		for (int i = 0; i < components.size(); i++) {
+			var component = components.get(i);
+			if (component == null)
+				component = layout.axis == Axis.HORIZONTAL ? Box.createHorizontalGlue() : Box.createVerticalGlue();
+			panel.add(component, proportions[i]);
+		}
 
 		return panel;
 	}

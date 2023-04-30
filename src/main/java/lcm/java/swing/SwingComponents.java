@@ -9,6 +9,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -22,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 
@@ -285,5 +288,35 @@ public class SwingComponents {
             }
         });
         return questionLabel;
+    }
+
+    /**
+     * Attaches a key listener to the given input text field that triggers the given
+     * action when the specified key code is pressed.
+     *
+     * @param inputText the text field to attach the key listener to
+     * @param keyCode   the key code that triggers the action
+     * @param action    the action to execute when the key is pressed
+     */
+    public static void addKeyPressedListener(JTextField inputText, int keyCode, Runnable action) {
+		inputText.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == keyCode)
+					action.run();
+			}
+		});
+    }
+
+    /**
+     * Adds a listener to the specified JTextField that will run the given action 
+     * when the enter key is pressed.
+     * 
+     * @param inputText The JTextField to add the listener to.
+     * @param action The action to run when the enter key is pressed.
+     */
+    public static void addEnterPressedListener(JTextField inputText, Runnable action) {
+        addKeyPressedListener(inputText, KeyEvent.VK_ENTER, action);
     }
 }
