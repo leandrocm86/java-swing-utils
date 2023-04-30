@@ -3,11 +3,14 @@ package lcm.java.swing;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 
@@ -15,8 +18,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 
 /**
@@ -58,18 +64,21 @@ public class SwingComponents {
 	}
 	
 	/**
-	 * Creates a scroll pane around a given component, with the given thicknesses (horizontal and vertical scrolls).
-     * 
-     * @param content - The component to be displayed inside the scroll pane.
-     * @param verticalScrollSize - The thickness for the vertical scrolling controller (zero for none).
-     * @param horizontalScrollSize - The thickness for the horizontal scrolling controller (zero for none).
-     * @return JScrollPane containing the given component.
-	 */
-	public static JScrollPane createScrollPane(Component content, int verticalScrollSize, int horizontalScrollSize) {
+     * Creates a JScrollPane that wraps the given content component, and configures its
+     * vertical and horizontal scrollbars with the given size. The scrollbars are set to
+     * appear only when needed.
+     *
+     * @param content The component to wrap in the scroll pane.
+     * @param scrollSize The size of the scrollbars, in pixels.
+     * @return The newly created JScrollPane.
+     */
+	public static JScrollPane createScrollPane(Component content, int scrollSize) {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(content);
-		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(verticalScrollSize, 0));
-		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, horizontalScrollSize));
+		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(scrollSize, 0));
+		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, scrollSize));
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		return scrollPane;
 	}
 	
@@ -259,5 +268,22 @@ public class SwingComponents {
         public int getIconHeight() {
             return 0;
         }
+    }
+
+    /**
+     * Creates a tooltip (question mark) label with the given hint text.
+     *
+     * @param tipText the text to display in the tooltip
+     * @return a JLabel with an attached mouse listener that displays the tooltip when clicked
+     */
+    public static JLabel createTooltipLabel(String tipText) {
+        var questionLabel = new JLabel(UIManager.getIcon("OptionPane.questionIcon"));
+        questionLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        questionLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(null, tipText);
+            }
+        });
+        return questionLabel;
     }
 }

@@ -6,6 +6,10 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager2;
 import java.util.HashMap;
+import java.util.List;
+
+import javax.swing.Box;
+import javax.swing.JPanel;
 
 /**
  *  The <code>RelativeLayout</code> class is a layout manager that
@@ -105,6 +109,76 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable
 	 */
 	private int roundingPolicy = LARGEST;
 
+	/**
+	 * Creates a JPanel with horizontal layout containing the given Components, disposed with the given relative proportions.
+	 * The vertical space of this panel is not necessarily filled by the components (contrary to {@link #fullHorizontalPane(List, float...)}).
+	 * The list's order defines the elements from left to right, with null components replaced by empty spaces.
+	 *
+	 * @param proportions An array of floats representing the proportions of each component's width 
+	 *                     in the layout. Must have the same length as the number of components.
+	 * @param components  An array of JComponents to be added to the panel in order.
+	 * @return            A JPanel containing the given components horizontally disposed with the given proportions.
+	 */
+	public static JPanel horizontalPane(List<Component> components, float... proportions) {
+		components.replaceAll(elem -> elem != null ? elem : Box.createHorizontalGlue());
+		return createPanel(new RelativeLayout(Axis.HORIZONTAL, false), components, proportions);
+	}
+
+	/**
+	 * Creates a JPanel with horizontal layout containing the given Components, disposed with the given relative proportions.
+	 * All the vertical space of this panel will be filled by the components (contrary to {@link #horizontalPane(List, float...)}).
+	 * The list's order defines the elements from left to right, with null components replaced by empty spaces.
+	 *
+	 * @param proportions An array of floats representing the proportions of each component's width 
+	 *                     in the layout. Must have the same length as the number of components.
+	 * @param components  An array of JComponents to be added to the panel in order.
+	 * @return            A JPanel containing the given components horizontally disposed with the given proportions.
+	 */
+	public static JPanel fullHorizontalPane(List<Component> components, float... proportions) {
+		components.replaceAll(elem -> elem != null ? elem : Box.createHorizontalGlue());
+		return createPanel(new RelativeLayout(Axis.HORIZONTAL, true), components, proportions);
+	}
+
+	/**
+	 * Creates a JPanel with vertical layout containing the given Components, disposed with the given relative proportions.
+	 * The horizontal space of this panel is not necessarily filled by the components (contrary to {@link #fullVerticalPane(List, float...)}).
+	 * The list's order defines the elements from top to bottom, with null components replaced by empty spaces.
+	 *
+	 * @param proportions An array of floats representing the proportions of each component's height 
+	 *                     in the layout. Must have the same length as the number of components.
+	 * @param components  An array of JComponents to be added to the panel in order.
+	 * @return            A JPanel containing the given components vertically disposed with the given proportions.
+	 */
+	public static JPanel verticalPane(List<Component> components, float... proportions) {
+		components.replaceAll(elem -> elem != null ? elem : Box.createVerticalGlue());
+		return createPanel(new RelativeLayout(Axis.VERTICAL, false), components, proportions);
+	}
+
+	/**
+	 * Creates a JPanel with vertical layout containing the given Components, disposed with the given relative proportions.
+	 * All the horizontal space of this panel will be filled by the components (contrary to {@link #verticalPane(List, float...)}).
+	 * The list's order defines the elements from top to bottom, with null components replaced by empty spaces.
+	 *
+	 * @param proportions An array of floats representing the proportions of each component's height 
+	 *                     in the layout. Must have the same length as the number of components.
+	 * @param components  An array of JComponents to be added to the panel in order.
+	 * @return            A JPanel containing the given components vertically disposed with the given proportions.
+	 */
+	public static JPanel fullVerticalPane(List<Component> components, float... proportions) {
+		components.replaceAll(elem -> elem != null ? elem : Box.createVerticalGlue());
+		return createPanel(new RelativeLayout(Axis.VERTICAL, true), components, proportions);
+	}
+
+	private static JPanel createPanel(RelativeLayout layout, List<Component> components, float... proportions) {
+		if (components.size() != proportions.length)
+			throw new IllegalArgumentException("Different number of components and proportions for RelativeLayout!");
+
+		var panel = new JPanel(layout);
+		for (int i = 0; i < components.size(); i++)
+			panel.add(components.get(i), proportions[i]);
+
+		return panel;
+	}
 
 	/**
 	 * Overload of {@link #RelativeLayout(Axis, int, int, boolean)} with no gaps nor whole filling.
@@ -117,16 +191,23 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable
 	}
 
 	/**
-	 * Overload of {@link #RelativeLayout(Axis, int, int, boolean)} with no special border gap nor whole filling.
+	 * Overload of {@link #RelativeLayout(Axis, int, int, boolean)} with no border gap nor whole filling.
 	 * @param axis - HORIZONTAL (X-AXIS) or VERTICAL (Y_AXIS).
 	 * @param gap - The gap between each component.
 	 * @see #RelativeLayout(Axis, int, int, boolean)
 	 */
-	public RelativeLayout(Axis axis, int gap)
-	{
-		setAxis(axis);
-		setGap(gap);
-		setBorderGap(gap);
+	public RelativeLayout(Axis axis, int gap) {
+		this(axis, gap, 0, false);
+	}
+
+	/**
+	 * Overload of {@link #RelativeLayout(Axis, int, int, boolean)} with no gaps.
+	 * @param axis - HORIZONTAL (X-AXIS) or VERTICAL (Y_AXIS).
+	 * @param fill - Wether the components should fill the opposite axis.
+	 * @see #RelativeLayout(Axis, int, int, boolean)
+	 */
+	public RelativeLayout(Axis axis, boolean fill) {
+		this(axis, 0, 0, fill);
 	}
 
 	/**
@@ -308,9 +389,8 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable
 	 *  @return  the constraint for the specified component, or null
 	 *           if component is null or is not present in this layout
      */
-    public Float getConstraints(Component component)
-    {
-    	return (Float)constraints.get(component);
+    public Float getConstraints(Component component) {
+    	return constraints.get(component);
     }
 
 	/**
@@ -321,14 +401,11 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable
 	 /*
 	  *	Keep track of any specified constraint for the component.
 	  */
-	public void addLayoutComponent(Component component, Object constraint)
-	{
-		if (constraint == null || constraint instanceof Float)
-		{
-			constraints.put(component, (Float)constraint);
-		}
+	public void addLayoutComponent(Component component, Object constraint) {
+		if (constraint == null || constraint instanceof Number)
+			constraints.put(component, (Float) constraint);
 		else
-			throw new IllegalArgumentException("Constraint parameter must be of type Float");
+			throw new IllegalArgumentException("Constraint parameter must be numeric");
 	}
 
 	/**
