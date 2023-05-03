@@ -12,7 +12,12 @@ import javax.swing.JPanel;
 import lcm.java.swing.RelativeLayout.Axis;
 
 /**
- *  Helper class to create layouts in Swing. It abstracts and makes easier the use of loyout classes such as GridLayout and RelativeLayout.
+ *  Helper class to create layouts in Swing. It abstracts and makes easier the use of loyout classes such as GridLayout, GridBagLayout and RelativeLayout.
+ *  The options of layout given are always one dimensional. We can either dispose elements in a row (horizontally) or in a column (vertically).
+ *  Also, the inserted components will always be stretched to fill the chosen dimension, but the stretching on the other dimension is optional.
+ * 	To stretch the elements in both dimensions (filling their whole space), it's necessary to call the "full" methods (fullHorizontalPane and fullVerticalPane).
+ *  If no arguments are given beside the components, the space available for each component will be the same (GridLayout or GridBagLayout will be used).
+ *  To use RelativeLayout, it's necessary to give each component's relative proportions after the list of components, in the same order as the list. 
  */
 public class Layouts {
 
@@ -115,7 +120,7 @@ public class Layouts {
 		var panel = new JPanel(new GridBagLayout());
 
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.NONE;
+		gbc.fill = horizontal ? GridBagConstraints.HORIZONTAL : GridBagConstraints.VERTICAL;
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.weightx = 1.0;
         gbc.weighty = 1.0;
@@ -137,8 +142,6 @@ public class Layouts {
 	 * All the vertical space of this panel will be filled by the components (contrary to {@link #horizontalPane(List)}).
 	 *
 	 * @param components A list of components to be added to the JPanel.
-	 * @param horizontal A boolean value that determines if the components should be arranged
-	 *                   horizontally (true) or vertically (false).
 	 * @return A JPanel object with a GridLayout, containing the given components.
 	 */
 	public static JPanel fullHorizontalPane(List<Component> components) {
@@ -151,8 +154,6 @@ public class Layouts {
 	 * All the horizontal space of this panel will be filled by the components (contrary to {@link #verticalPane(List)}).
 	 *
 	 * @param components A list of components to be added to the JPanel.
-	 * @param horizontal A boolean value that determines if the components should be arranged
-	 *                   horizontally (true) or vertically (false).
 	 * @return A JPanel object with a GridLayout, containing the given components.
 	 */
 	public static JPanel fullVerticalPane(List<Component> components) {

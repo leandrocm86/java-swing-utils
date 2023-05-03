@@ -327,8 +327,10 @@ public class RelativeLayout implements LayoutManager2, java.io.Serializable
 	  *	Keep track of any specified constraint for the component.
 	  */
 	public void addLayoutComponent(Component component, Object constraint) {
-		if (constraint == null || constraint instanceof Number)
+		if (constraint == null || constraint instanceof Float)
 			constraints.put(component, (Float) constraint);
+		else if (constraint instanceof Number)
+			constraints.put(component, ((Number) constraint).floatValue());
 		else
 			throw new IllegalArgumentException("Constraint parameter must be numeric");
 	}
