@@ -31,7 +31,7 @@ public class Layouts {
 	 * @param components  An array of JComponents to be added to the panel in order.
 	 * @return            A JPanel containing the given components horizontally disposed with the given proportions.
 	 */
-	public static JPanel horizontalPane(List<Component> components, float... proportions) {
+	public static JPanel horizontalPane(List<? extends Component> components, float... proportions) {
 		return createRelativeLayoutPanel(new RelativeLayout(Axis.HORIZONTAL, false), components, proportions);
 	}
 
@@ -45,7 +45,7 @@ public class Layouts {
 	 * @param components  An array of JComponents to be added to the panel in order.
 	 * @return            A JPanel containing the given components horizontally disposed with the given proportions.
 	 */
-	public static JPanel fullHorizontalPane(List<Component> components, float... proportions) {
+	public static JPanel fullHorizontalPane(List<? extends Component> components, float... proportions) {
 		return createRelativeLayoutPanel(new RelativeLayout(Axis.HORIZONTAL, true), components, proportions);
 	}
 
@@ -59,7 +59,7 @@ public class Layouts {
 	 * @param components  An array of JComponents to be added to the panel in order.
 	 * @return            A JPanel containing the given components vertically disposed with the given proportions.
 	 */
-	public static JPanel verticalPane(List<Component> components, float... proportions) {
+	public static JPanel verticalPane(List<? extends Component> components, float... proportions) {
 		return createRelativeLayoutPanel(new RelativeLayout(Axis.VERTICAL, false), components, proportions);
 	}
 
@@ -73,11 +73,11 @@ public class Layouts {
 	 * @param components  An array of JComponents to be added to the panel in order.
 	 * @return            A JPanel containing the given components vertically disposed with the given proportions.
 	 */
-	public static JPanel fullVerticalPane(List<Component> components, float... proportions) {
+	public static JPanel fullVerticalPane(List<? extends Component> components, float... proportions) {
 		return createRelativeLayoutPanel(new RelativeLayout(Axis.VERTICAL, true), components, proportions);
 	}
 
-	private static JPanel createRelativeLayoutPanel(RelativeLayout layout, List<Component> components, float... proportions) {
+	private static JPanel createRelativeLayoutPanel(RelativeLayout layout, List<? extends Component> components, float... proportions) {
 		if (components.size() != proportions.length)
 			throw new IllegalArgumentException("Different number of components and proportions for RelativeLayout!");
 
@@ -100,7 +100,7 @@ public class Layouts {
 	 * @param components a List of Component objects to be added to the panel
 	 * @return a JPanel with the components laid out horizontally
 	 */
-	public static JPanel horizontalPane(List<Component> components) {
+	public static JPanel horizontalPane(List<? extends Component> components) {
 		return createGridBagPaneWithNoFillPanel(components, true);
 	}
 
@@ -112,11 +112,11 @@ public class Layouts {
 	 * @param components a List of Component objects to be added to the panel
 	 * @return a JPanel with the components laid out vertically
 	 */
-	public static JPanel verticalPane(List<Component> components) {
+	public static JPanel verticalPane(List<? extends Component> components) {
 		return createGridBagPaneWithNoFillPanel(components, false);
 	}
 
-	private static JPanel createGridBagPaneWithNoFillPanel(List<Component> components, boolean horizontal) {
+	private static JPanel createGridBagPaneWithNoFillPanel(List<? extends Component> components, boolean horizontal) {
 		JPanel panel = new JPanel(new GridBagLayout());
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -144,7 +144,7 @@ public class Layouts {
 	 * @param components A list of components to be added to the JPanel.
 	 * @return A JPanel object with a GridLayout, containing the given components.
 	 */
-	public static JPanel fullHorizontalPane(List<Component> components) {
+	public static JPanel fullHorizontalPane(List<? extends Component> components) {
 		return createGridLayoutPanel(components, true);
 	}
 
@@ -156,11 +156,11 @@ public class Layouts {
 	 * @param components A list of components to be added to the JPanel.
 	 * @return A JPanel object with a GridLayout, containing the given components.
 	 */
-	public static JPanel fullVerticalPane(List<Component> components) {
+	public static JPanel fullVerticalPane(List<? extends Component> components) {
 		return createGridLayoutPanel(components, false);
 	}
 
-	private static JPanel createGridLayoutPanel(List<Component> components, boolean horizontal) {
+	private static JPanel createGridLayoutPanel(List<? extends Component> components, boolean horizontal) {
 		JPanel panel = new JPanel(new GridLayout(horizontal ? 1 : components.size(), horizontal ? components.size() : 1));
 		for (Component component : components) {
             Component componentToAdd = component != null ? component : horizontal ? Box.createHorizontalGlue() : Box.createVerticalGlue();
