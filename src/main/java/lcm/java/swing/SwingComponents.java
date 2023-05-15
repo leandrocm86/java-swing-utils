@@ -17,6 +17,9 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -30,6 +33,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 /**
  * Helper class for building and manipulating various complex Swing components.
@@ -348,5 +355,43 @@ public class SwingComponents {
      */
     public static Image getImageFromPath(String path) {
         return Toolkit.getDefaultToolkit().getImage(path);
+    }
+
+    /**
+     * Restricts the input of a given JTextField to only allow characters that match the given regex pattern. 
+     *
+     * @param input The JTextField to restrict input on.
+     * @param regex The regex pattern to match against the input.
+     */
+    public void restrictInput(JTextField input, String regex) {
+        ((AbstractDocument) input.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches(regex)) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+    }
+
+    /**
+     * Filters the children of the given parent container based on the provided filter
+     * and returns a list of all components that pass the filter.
+     *
+     * @param parent the container whose children are to be filtered
+     * @param filter the filter function to apply to each child component
+     * @return a list of all children components that pass the filter
+     */
+    public static List<Component> filterChildren(Container parent, Function<Component, Boolean> filter) {
+        ArrayList<Component> result = new ArrayList<>();
+        for (Component child : parent.getComponents()) {
+            if (filter.apply(child)) {
+                result.add(child);
+            }
+            if (child instanceof Container) {
+                result.addAll(filterChildren((Container) child, filter));
+            }
+        }
+        return result;
     }
 }
