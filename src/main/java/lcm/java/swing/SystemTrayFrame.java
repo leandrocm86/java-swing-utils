@@ -27,19 +27,19 @@ public class SystemTrayFrame extends JFrame {
     private boolean restoreOption;
     
     /**
-     * Overload for the complete constructor {@link #SystemTrayFrame(String, String, boolean)}, assuming restoreOption = FALSE.
+     * Overload for the complete constructor {@link #SystemTrayFrame(String, Image, boolean)}, assuming restoreOption = FALSE.
      * @param name - Name of the frame.
-     * @see #SystemTrayFrame(String, String, boolean)
+     * @see #SystemTrayFrame(String, Image, boolean)
      */
     public SystemTrayFrame(String name) {
     	this(name, null);
     }
     
     /**
-     * Overload for the complete constructor {@link #SystemTrayFrame(String, String, boolean)}, assuming restoreOption = FALSE.
+     * Overload for the complete constructor {@link #SystemTrayFrame(String, Image, boolean)}, assuming restoreOption = FALSE.
      * @param name - Name of the frame.
      * @param image - The image to be used as an icon.
-     * @see #SystemTrayFrame(String, String, boolean)
+     * @see #SystemTrayFrame(String, Image, boolean)
      */
     public SystemTrayFrame(String name, Image image) {
     	this(name, image, false);
