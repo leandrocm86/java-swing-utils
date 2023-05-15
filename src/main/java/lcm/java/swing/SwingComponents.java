@@ -280,7 +280,7 @@ public class SwingComponents {
      * @return a JLabel with an attached mouse listener that displays the tooltip when clicked
      */
     public static JLabel createTooltipLabel(String tipText) {
-        var questionLabel = new JLabel(UIManager.getIcon("OptionPane.questionIcon"));
+        JLabel questionLabel = new JLabel(UIManager.getIcon("OptionPane.questionIcon"));
         questionLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         questionLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {

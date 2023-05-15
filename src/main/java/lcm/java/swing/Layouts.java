@@ -81,9 +81,9 @@ public class Layouts {
 		if (components.size() != proportions.length)
 			throw new IllegalArgumentException("Different number of components and proportions for RelativeLayout!");
 
-		var panel = new JPanel(layout);
+		JPanel panel = new JPanel(layout);
 		for (int i = 0; i < components.size(); i++) {
-			var component = components.get(i);
+			Component component = components.get(i);
 			if (component == null)
 				component = layout.getAxis() == Axis.HORIZONTAL ? Box.createHorizontalGlue() : Box.createVerticalGlue();
 			panel.add(component, proportions[i]);
@@ -117,7 +117,7 @@ public class Layouts {
 	}
 
 	private static JPanel createGridBagPaneWithNoFillPanel(List<Component> components, boolean horizontal) {
-		var panel = new JPanel(new GridBagLayout());
+		JPanel panel = new JPanel(new GridBagLayout());
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = horizontal ? GridBagConstraints.HORIZONTAL : GridBagConstraints.VERTICAL;
@@ -129,7 +129,7 @@ public class Layouts {
 		for (int i = 0; i < components.size(); i++) {
 			gbc.gridx = horizontal ? i : 0;
 			gbc.gridy = horizontal ? 0 : i;
-            var component = components.get(i) != null ? components.get(i) : (horizontal ? Box.createHorizontalGlue() : Box.createVerticalGlue());
+            Component component = components.get(i) != null ? components.get(i) : (horizontal ? Box.createHorizontalGlue() : Box.createVerticalGlue());
 			panel.add(component, gbc);
 		}
 
@@ -161,9 +161,9 @@ public class Layouts {
 	}
 
 	private static JPanel createGridLayoutPanel(List<Component> components, boolean horizontal) {
-		var panel = new JPanel(new GridLayout(horizontal ? 1 : components.size(), horizontal ? components.size() : 1));
+		JPanel panel = new JPanel(new GridLayout(horizontal ? 1 : components.size(), horizontal ? components.size() : 1));
 		for (Component component : components) {
-            var componentToAdd = component != null ? component : horizontal ? Box.createHorizontalGlue() : Box.createVerticalGlue();
+            Component componentToAdd = component != null ? component : horizontal ? Box.createHorizontalGlue() : Box.createVerticalGlue();
 			panel.add(componentToAdd);
         }
 		return panel;
