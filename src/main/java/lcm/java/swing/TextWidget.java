@@ -69,7 +69,7 @@ public class TextWidget {
 	    g.setFont(this.font);
 	    g.drawString(this.text.toString(), 0, 15);
 	    g.dispose();
-	    frame.updateIcon(bi, title.toString());
+	    frame.setTrayIcon(bi, title.toString());
 	}
 }
 

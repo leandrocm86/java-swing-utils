@@ -5,7 +5,6 @@ import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
@@ -14,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+
 import javax.swing.JFrame;
 
 /** 
@@ -22,7 +22,6 @@ import javax.swing.JFrame;
 public class SystemTrayFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
-	private String imgURL;
 	private TrayIcon trayIcon;
     private SystemTray tray;
     private boolean restoreOption;
@@ -33,35 +32,33 @@ public class SystemTrayFrame extends JFrame {
      * @see #SystemTrayFrame(String, String, boolean)
      */
     public SystemTrayFrame(String name) {
-    	this(name, "");
+    	this(name, null);
     }
     
     /**
      * Overload for the complete constructor {@link #SystemTrayFrame(String, String, boolean)}, assuming restoreOption = FALSE.
      * @param name - Name of the frame.
-     * @param imgPath - The path for the image file to be used as an icon.
+     * @param image - The image to be used as an icon.
      * @see #SystemTrayFrame(String, String, boolean)
      */
-    public SystemTrayFrame(String name, String imgPath) {
-    	this(name, imgPath, false);
+    public SystemTrayFrame(String name, Image image) {
+    	this(name, image, false);
     }
     
     /** 
      * Constructor for the SystemTrayFrame.
      * 
      * @param name - Name of the frame.
-     * @param imgPath - The path for the image file to be used as an icon.
+     * @param image - The image to be used as an icon.
      * @param restoreOption - Wether the frame should have an option to be restored (also by double-clicking its icon).
      */
-    public SystemTrayFrame(String name, String imgPath, boolean restoreOption) {
+    public SystemTrayFrame(String name, Image image, boolean restoreOption) {
         super(name);
         this.restoreOption = restoreOption;
         
         if (SystemTray.isSupported()) {
-        	this.imgURL = imgPath;
             this.tray = SystemTray.getSystemTray();
-            Image image = Toolkit.getDefaultToolkit().getImage(this.imgURL);
-            this.setTrayImage(image, name);
+            this.setTrayIcon(image, name);
         } else {
             throw new IllegalStateException("Swing error: SystemTray is not supported.");
         }
@@ -80,7 +77,7 @@ public class SystemTrayFrame extends JFrame {
                 }
             }
         });
-        super.setIconImage(Toolkit.getDefaultToolkit().getImage(this.imgURL)); // Window icon
+        super.setIconImage(image); // Window icon
     }
 
     private void addIconToTray() {
@@ -97,7 +94,7 @@ public class SystemTrayFrame extends JFrame {
      * @param image - Image to be rendered.
      * @param title - Title (tooltip) for the image.
      */
-    public void setTrayImage(Image image, String title) {
+    public void setTrayIcon(Image image, String title) {
     	this.tray.remove(this.trayIcon);
     	
     	ActionListener exitListener = new ActionListener() {
@@ -152,16 +149,7 @@ public class SystemTrayFrame extends JFrame {
         addIconToTray();
     }
     
-    /**
-     * Changes the icon to be displayed on system tray.
-     * @param image - New image to be displayed.
-     * @param tooltip - New tooltip message to be displayed.
-     */
-    public void updateIcon(Image image, String tooltip) {
-    	this.trayIcon.setImage(image);
-    	this.trayIcon.setToolTip(tooltip);
-    }
-    
+
     /**
      * Adss a mouse listener to the icon on system tray.
      * @param listener - The mouse listener to be added on system tray.
