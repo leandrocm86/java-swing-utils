@@ -90,8 +90,7 @@ public class CustomFont extends java.awt.Font {
 			if (component instanceof JCheckBox)
 				SwingComponents.scaleCheckBoxIcon((JCheckBox) component);
 		    if (component instanceof Container) {
-		        for (Component child : ((Container) component).getComponents())
-		        {
+		        for (Component child : SwingComponents.getAllChildren((Container) component)) {
 		        	if (force || (child.getFont() == null || !(child.getFont() instanceof CustomFont)))
 		        		this.apply(force, child);
 		        }

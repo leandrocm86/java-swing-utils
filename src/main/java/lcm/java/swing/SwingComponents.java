@@ -17,9 +17,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -27,6 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -379,19 +381,29 @@ public class SwingComponents {
      * and returns a list of all components that pass the filter.
      *
      * @param parent the container whose children are to be filtered
-     * @param filter the filter function to apply to each child component
-     * @return a list of all children components that pass the filter
+     * @param filter the predicate to apply to each child component
+     * @return a set of all children components that pass the filter
      */
-    public static List<Component> filterChildren(Container parent, Function<Component, Boolean> filter) {
-        ArrayList<Component> result = new ArrayList<>();
+    public static Set<Component> filterChildren(Container parent, Predicate<Component> filter) {
+        return getAllChildren(parent).stream().filter(filter).collect(Collectors.toSet());
+    }
+
+    /**
+     * Gets all the children reachable from the given parent container.
+     * It's recursive and considers menu items as children from their menus.
+     *
+     * @param parent the container whose children are to be collected
+     * @return a set of all children reachable from the given parent
+     */
+    public static Set<Component> getAllChildren(Container parent) {
+        Set<Component> children = new HashSet<>();
         for (Component child : parent.getComponents()) {
-            if (filter.apply(child)) {
-                result.add(child);
-            }
-            if (child instanceof Container) {
-                result.addAll(filterChildren((Container) child, filter));
-            }
+            children.add(child);
+            if (child instanceof Container)
+                children.addAll(getAllChildren((Container) child));
         }
-        return result;
+        if (parent instanceof JMenu)
+            children.addAll(getAllChildren(((JMenu) parent).getPopupMenu()));
+        return children;
     }
 }
