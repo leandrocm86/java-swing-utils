@@ -52,7 +52,7 @@ public class SwingComponents {
      * Notice it is not final, so it can be changed if needed.
      */
 	public static CustomFont DEFAULT_FONT = Screen.getScreenHeight() > 1440 ? CustomFont.ARIAL_40 : CustomFont.ARIAL_20;
-	
+
 	static {
 		javax.swing.UIManager.put("OptionPane.messageFont", DEFAULT_FONT);
 		javax.swing.UIManager.put("OptionPane.buttonFont", DEFAULT_FONT);
@@ -365,7 +365,7 @@ public class SwingComponents {
      * @param input The JTextField to restrict input on.
      * @param regex The regex pattern to match against the input.
      */
-    public void restrictInput(JTextField input, String regex) {
+    public static void restrictInput(JTextField input, String regex) {
         ((AbstractDocument) input.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
