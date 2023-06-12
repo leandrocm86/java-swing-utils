@@ -27,7 +27,7 @@ public class SystemTrayFrame extends JFrame {
     private boolean restoreOption;
     
     /**
-     * Overload for the complete constructor {@link #SystemTrayFrame(String, Image, boolean)}, assuming restoreOption = FALSE.
+     * Overload for the complete constructor {@link #SystemTrayFrame(String, Image, boolean)}, assuming restoreOption = TRUE.
      * @param name - Name of the frame.
      * @see #SystemTrayFrame(String, Image, boolean)
      */
@@ -36,13 +36,13 @@ public class SystemTrayFrame extends JFrame {
     }
     
     /**
-     * Overload for the complete constructor {@link #SystemTrayFrame(String, Image, boolean)}, assuming restoreOption = FALSE.
+     * Overload for the complete constructor {@link #SystemTrayFrame(String, Image, boolean)}, assuming restoreOption = TRUE.
      * @param name - Name of the frame.
      * @param image - The image to be used as an icon.
      * @see #SystemTrayFrame(String, Image, boolean)
      */
     public SystemTrayFrame(String name, Image image) {
-    	this(name, image, false);
+    	this(name, image, true);
     }
     
     /** 
@@ -72,8 +72,6 @@ public class SystemTrayFrame extends JFrame {
             	else {
                     addIconToTray();
                     setVisible(false);
-                    // if (e.getNewState() == ICONIFIED)
-                    // 	Events.notify(new Evento(EVENT_WINDOW_MINIMIZED, this));
                 }
             }
         });
@@ -149,7 +147,6 @@ public class SystemTrayFrame extends JFrame {
         addIconToTray();
     }
     
-
     /**
      * Adss a mouse listener to the icon on system tray.
      * @param listener - The mouse listener to be added on system tray.
