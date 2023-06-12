@@ -6,10 +6,13 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -50,6 +53,74 @@ public class Images {
             }
         });
         return questionLabel;
+    }
+
+    /**
+     * Resizes an image by a given proportion percentage.
+     *
+     * @param  image                the image to be resized
+     * @param  proportionPercentage the percentage to resize the image by
+     * @return                      the resized image
+     */
+    public static Image resizeByProportion(Image image, int proportionPercentage) {
+        int imageWidth = image.getWidth(null);
+        int imageHeight = image.getHeight(null);
+        int newWidth = imageWidth * proportionPercentage / 100;
+        int newHeight = imageHeight * proportionPercentage / 100;
+        return image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+    }
+
+    /**
+     * Resizes the given image to the max width provided, keeping its proportion.
+     *
+     * @param  image     the image to resize
+     * @param  maxWidth  the maximum width of the resulting image
+     * @return           the resized image
+     */
+    public static Image resizeByWidth(Image image, int maxWidth) {
+        int imageWidth = image.getWidth(null);
+        int proportion = (maxWidth / imageWidth) * 100;
+        return resizeByProportion(image, proportion);
+    }
+
+    /**
+     * Resizes the given image to the max height provided, keeping its proportion.
+     *
+     * @param  image     the image to resize
+     * @param  maxHeight  the maximum height of the resulting image
+     * @return           the resized image
+     */
+    public static Image resizeByHeight(Image image, int maxHeight) {
+        int imageHeight = image.getHeight(null);
+        int proportion = Math.round((Float.valueOf(maxHeight) / imageHeight) * 100);
+        return resizeByProportion(image, proportion);
+    }
+
+     /**
+     * Retrieves an image from a resource with the specified path (may be relative inside the JAR).
+     *
+     * @param  resource  the path to the image resource
+     * @return           the image retrieved from the resource
+     * @throws IllegalArgumentException if there is an error while trying to get the image from the resource
+     */
+    public static Image getImageFromResource(String resource) {
+        try {
+            return ImageIO.read(SwingComponents.class.getResourceAsStream(resource));
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Error while trying to get image from resource " + resource, e);
+        }
+    }
+
+    /**
+     * Returns an Image object that can then be drawn to the screen. 
+     * The image is specified by a filesystem's path and is loaded using the 
+     * default toolkit. 
+     *
+     * @param  path  a string that represents the path to the image file
+     * @return       the Image object representing the image at the specified path
+     */
+    public static Image getImageFromPath(String path) {
+        return Toolkit.getDefaultToolkit().getImage(path);
     }
 
     /**

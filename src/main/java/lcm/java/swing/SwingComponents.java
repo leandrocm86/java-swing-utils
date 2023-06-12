@@ -7,17 +7,14 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -175,33 +172,6 @@ public class SwingComponents {
      */
     public static void addEnterPressedListener(JTextField inputText, Runnable action) {
         addKeyPressedListener(inputText, KeyEvent.VK_ENTER, action);
-    }
-
-    /**
-     * Retrieves an image from a resource with the specified path (may be relative inside the JAR).
-     *
-     * @param  resource  the path to the image resource
-     * @return           the image retrieved from the resource
-     * @throws IllegalArgumentException if there is an error while trying to get the image from the resource
-     */
-    public static Image getImageFromResource(String resource) {
-        try {
-            return ImageIO.read(SwingComponents.class.getResourceAsStream(resource));
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Error while trying to get image from resource " + resource, e);
-        }
-    }
-
-    /**
-     * Returns an Image object that can then be drawn to the screen. 
-     * The image is specified by a filesystem's path and is loaded using the 
-     * default toolkit. 
-     *
-     * @param  path  a string that represents the path to the image file
-     * @return       the Image object representing the image at the specified path
-     */
-    public static Image getImageFromPath(String path) {
-        return Toolkit.getDefaultToolkit().getImage(path);
     }
 
     /**
